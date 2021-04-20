@@ -12,15 +12,13 @@ CREATE TABLE user_roles (
     FOREIGN KEY (username) REFERENCES users(username)
 );
 
-CREATE TABLE Accounts(
-    id INT GENERATED ALWAYS AS IDENTITY not null primary key,
-    username VARCHAR(16) NOT NULL,
-    password VARCHAR(16) NOT NULL,
-    fullName VARCHAR(255) NOT NULL,
-    phone VARCHAR(8) NOT NULL,
-    address VARCHAR(255) NOT NULL
+CREATE TABLE comments (
+    commentId VARCHAR(50) NOT NULL,
+    itemId VARCHAR(50) NOT NULL,
+    userName VARCHAR(50) NOT NULL,
+    contents VARCHAR(50) NOT NULL,
+    PRIMARY KEY (commentId)
 );
-
 
 INSERT INTO users VALUES ('keith', '{noop}keithpw');
 INSERT INTO user_roles(username, role) VALUES ('keith', 'ROLE_USER');
