@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Collection;
 
 public class Food implements Serializable {
-    private long id;
+    private String id;
     private String foodName;
     private String description;
     private double price;
@@ -14,11 +14,11 @@ public class Food implements Serializable {
     private Map<String, Attachment> attachments = new Hashtable<>();
     private Map<String, Comment> comments = new Hashtable<>();
     
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
