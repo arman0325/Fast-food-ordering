@@ -20,6 +20,15 @@ CREATE TABLE comments (
     PRIMARY KEY (commentId)
 );
 
+CREATE TABLE Accounts(
+    id INT GENERATED ALWAYS AS IDENTITY not null primary key,
+    username VARCHAR(16) NOT NULL,
+    password VARCHAR(16) NOT NULL,
+    fullName VARCHAR(255) NOT NULL,
+    phone VARCHAR(8) NOT NULL,
+    address VARCHAR(255) NOT NULL
+);
+
 INSERT INTO users VALUES ('keith', '{noop}keithpw');
 INSERT INTO user_roles(username, role) VALUES ('keith', 'ROLE_USER');
 INSERT INTO user_roles(username, role) VALUES ('keith', 'ROLE_ADMIN');
