@@ -3,6 +3,7 @@ package ouhk.comps380f.model;
 public class UserInformation {
     private String userID;
     private String password;
+    private String fullName;
     private String phone;
     private String address;
 
@@ -22,6 +23,14 @@ public class UserInformation {
         this.password = password;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+    
     public String getPhone() {
         return phone;
     }
