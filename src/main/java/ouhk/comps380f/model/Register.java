@@ -5,23 +5,56 @@
  */
 package ouhk.comps380f.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  *
  * @author arman
  */
-public class Register {
-    private String userName;
+@Entity
+@Table(name = "users")
+public class Register implements Serializable {
+
+    @Id
+    private String username;
     private String password;
     private String fullName;
-    private int phone;
+    private String phone;
     private String address;
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> roles = new ArrayList<>();
+
+    public Register() {
+    }
+
+    public Register(String username, String password, String[] roles, String fullName, String phone, String address) {
+        this.username = username;
+        this.password = "{noop}" + password;
+        for (String role : roles) {
+            this.roles.add(new UserRole(this, role));
+        }
+        this.fullName = fullName;
+        this.phone = phone;
+        this.address = address;
+    }
+// getters and setters of all properties
 
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     public void setUsername(String username) {
-        this.userName = username;
+        this.username = username;
     }
 
     public String getPassword() {
@@ -40,11 +73,11 @@ public class Register {
         this.fullName = fullName;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -55,7 +88,15 @@ public class Register {
     public void setAddress(String address) {
         this.address = address;
     }
-    
-    
+
+    public List<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<UserRole> roles) {
+        this.roles = roles;
+    }
+
     
 }
+
