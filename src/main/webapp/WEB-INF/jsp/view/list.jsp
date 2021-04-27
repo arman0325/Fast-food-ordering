@@ -6,6 +6,9 @@
     </head>
     <body>
         <h2>Fast Food Ordering System</h2>
+        <security:authorize access="hasRole('ADMIN')">
+            <a href="<c:url value="/user" />">Manage User Accounts</a><br /><br />
+        </security:authorize>
         <security:authorize access="isAuthenticated()">
             <c:url var="logoutUrl" value="/logout"/>
             <form action="${logoutUrl}" method="post">
@@ -31,7 +34,7 @@
                     <security:authorize access="isAuthenticated()">
                         [<a href="<c:url value="/menu/addToCart/${entry.key}" />">Add to cart</a>]
                     </security:authorize>
-                    
+
                     <security:authorize access="hasRole('ADMIN')">
                         [<a href="<c:url value="/ticket/edit/${entry.key}" />">Edit</a>]
                         [<a href="<c:url value="/ticket/delete/${entry.key}" />">Delete</a>]

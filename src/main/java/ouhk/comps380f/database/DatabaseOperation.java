@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Map;
 import ouhk.comps380f.model.Comment;
-import ouhk.comps380f.model.Register;
 
 public class DatabaseOperation {
     private DriverManager dataSource;

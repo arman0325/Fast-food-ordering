@@ -22,7 +22,7 @@
             <input type="submit" value="Log In"/>
         </form>
         <br /><br />Don't have an account?
-        <a href="<c:url value="/register" />"><button>Create an account</button></a><br /><br />
+        <a href="<c:url value="/user/create" />"><button>Create an account</button></a><br /><br />
         <a href="<c:url value="/menu" />">Return to Menu</a>
     </body>
 </html>
