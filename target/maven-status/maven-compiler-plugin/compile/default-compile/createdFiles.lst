@@ -8,6 +8,7 @@ ouhk\comps380f\model\TicketUser.class
 ouhk\comps380f\controller\MenuController$CommentForm.class
 ouhk\comps380f\controller\TicketUserController$Form.class
 ouhk\comps380f\controller\IndexController.class
+ouhk\comps380f\exception\TicketNotFound.class
 ouhk\comps380f\database\DatabaseOperation.class
 ouhk\comps380f\controller\TicketUserController.class
 ouhk\comps380f\model\Attachment.class

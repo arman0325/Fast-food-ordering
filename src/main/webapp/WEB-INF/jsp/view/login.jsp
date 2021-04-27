@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Customer Support Login</title>
+        <title>User Login</title>
     </head>
     <body>
-        <h2>Customer Support Login</h2>
+        <h2><spring:message code="register.title" /></h2>
         <c:if test="${param.error != null}">
             <p>Login failed.</p>
         </c:if>
@@ -12,17 +12,17 @@
             <p>You have logged out.</p>
         </c:if>
         <form action="login" method="POST">
-            <label for="username">Username:</label><br/>
+            <label for="username"><spring:message code="login.username" /></label><br/>
             <input type="text" id="username" name="username" /><br/><br/>
-            <label for="password">Password:</label><br/>
+            <label for="password"><spring:message code="login.pwd" /></label><br/>
             <input type="password" id="password" name="password" /><br/><br/>
             <input type="checkbox" id="remember-me" name="remember-me" />
-            <label for="remember-me">Remember me</label><br/><br/>
+            <label for="remember-me"><spring:message code="login.remember" /></label><br/><br/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input type="submit" value="Log In"/>
+            <input type="submit" value="<spring:message code="login.loginBtn"/>"/>
         </form>
-        <br /><br />Don't have an account?
-        <a href="<c:url value="/user/create" />"><button>Create an account</button></a><br /><br />
-        <a href="<c:url value="/menu" />">Return to Menu</a>
+        <br /><br /><spring:message code="login.registerMsg" />
+        <a href="<c:url value="/user/create" />"><button><spring:message code="login.registerBtn" /></button></a><br /><br />
+        <a href="<c:url value="/menu" />"><spring:message code="login.backURL" /></a>
     </body>
 </html>

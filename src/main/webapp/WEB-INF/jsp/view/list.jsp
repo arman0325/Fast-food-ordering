@@ -5,39 +5,42 @@
         <title>Fast Food Ordering System</title>
     </head>
     <body>
-        <h2>Fast Food Ordering System</h2>
+        <h2><spring:message code="orderSystem.title" /></h2>
+        <a href="?language=en">Eng</a>
+        <a href="?language=zh">中文</a>
+        
         <security:authorize access="hasRole('ADMIN')">
-            <a href="<c:url value="/user" />">Manage User Accounts</a><br /><br />
+            <a href="<c:url value="/user" />"><spring:message code="orderSystem.manageAccount" /></a><br /><br />
         </security:authorize>
         <security:authorize access="isAuthenticated()">
             <c:url var="logoutUrl" value="/logout"/>
             <form action="${logoutUrl}" method="post">
-                <input type="submit" value="Logout" />
+                <input type="submit" value="<spring:message code="orderSystem.logout" />" />
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
             <br />
         </security:authorize>
 
         <security:authorize access="!isAuthenticated()">
-            <a href="<c:url value="/login" />"><button>Login</button></a><br /><br />
+            <a href="<c:url value="/login" />"><button><spring:message code="login.title" /></button></a><br /><br />
         </security:authorize>
         <c:choose>
             <c:when test="${fn:length(menuDatabase) == 0}">
-                <i>There are no fast food in the system for ordering.</i>
+                <h2> <spring:message code="orderSystem.noneValue" /></h2>
             </c:when>
             <c:otherwise>
-                List of Fast Foods:<br /><br />
+                <spring:message code="orderSystem.listTitle" /><br /><br />
                 <c:forEach items="${menuDatabase}" var="entry" varStatus="loop">
                     ${loop.index + 1}. <a href="<c:url value="/menu/view/${entry.key}" />">
                         <c:out value="${entry.value.foodName}" /></a>
 
                     <security:authorize access="isAuthenticated()">
-                        [<a href="<c:url value="/menu/addToCart/${entry.key}" />">Add to cart</a>]
+                        [<a href="<c:url value="/menu/addToCart/${entry.key}" />"><spring:message code="orderSystem.addToCart" /></a>]
                     </security:authorize>
 
                     <security:authorize access="hasRole('ADMIN')">
-                        [<a href="<c:url value="/ticket/edit/${entry.key}" />">Edit</a>]
-                        [<a href="<c:url value="/ticket/delete/${entry.key}" />">Delete</a>]
+                        [<a href="<c:url value="/ticket/edit/${entry.key}" />"><spring:message code="orderSystem.edit" /></a>]
+                        [<a href="<c:url value="/ticket/delete/${entry.key}" />"><spring:message code="orderSystem.delete" /></a>]
                     </security:authorize> 
                     <br />
                 </c:forEach>
