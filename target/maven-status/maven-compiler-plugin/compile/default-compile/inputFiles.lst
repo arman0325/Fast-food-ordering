@@ -7,7 +7,10 @@ D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\UserRole.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\database\DatabaseOperation.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\controller\MenuController.java
+D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\dao\RecordRepository.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\service\UserService.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\NewUser.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\dao\UserRepository.java
+D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\Record.java
+D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\service\RecordService.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\Food.java

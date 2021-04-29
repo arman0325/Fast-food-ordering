@@ -2,8 +2,10 @@ ouhk\comps380f\dao\UserRoleRepository.class
 ouhk\comps380f\model\Comment.class
 ouhk\comps380f\dao\UserRepository.class
 ouhk\comps380f\service\UserService.class
+ouhk\comps380f\service\RecordService.class
 ouhk\comps380f\controller\UserController.class
 ouhk\comps380f\model\UserRole.class
+ouhk\comps380f\model\Record.class
 ouhk\comps380f\model\Food.class
 ouhk\comps380f\controller\MenuController$CommentForm.class
 ouhk\comps380f\controller\UserController$Form.class
@@ -13,3 +15,4 @@ ouhk\comps380f\database\DatabaseOperation.class
 ouhk\comps380f\model\NewUser.class
 ouhk\comps380f\model\Attachment.class
 ouhk\comps380f\controller\MenuController.class
+ouhk\comps380f\dao\RecordRepository.class

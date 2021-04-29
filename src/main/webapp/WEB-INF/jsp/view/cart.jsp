@@ -20,6 +20,13 @@
                 </tr>
             </c:forEach>
         </table>
+        
+        <form>
+            <input type="hidden" id="cartItem" name="cartItem" value="${UserCart}"/>
+            <button type="submit">submit</button>
+        </form>
     </c:otherwise>
 </c:choose>
 
+        
+        

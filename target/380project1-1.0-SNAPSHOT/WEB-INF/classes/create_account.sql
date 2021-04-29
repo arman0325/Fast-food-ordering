@@ -49,4 +49,4 @@ CREATE TABLE records(
     FOREIGN KEY (username) REFERENCES users(username)
 )
 
-INSERT INTO records(username, orderlist) VALUES ('peter', '[1,2;2,3]');
+INSERT INTO records(username, orderlist) VALUES ('peter', '{2=3, 1=2}');
