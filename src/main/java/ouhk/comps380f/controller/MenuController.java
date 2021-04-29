@@ -2,18 +2,12 @@ package ouhk.comps380f.controller;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,16 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
-import ouhk.comps380f.model.Attachment;
 import ouhk.comps380f.model.Comment;
 import ouhk.comps380f.model.Food;
 import ouhk.comps380f.database.DatabaseOperation;
+import ouhk.comps380f.service.RecordService;
 
 @Controller
 @RequestMapping("/menu")
 public class MenuController {
+    
+    @Autowired
+    private RecordService recordService;  
+    
     DatabaseOperation dbOperation = new DatabaseOperation();
     private Map<String, Food> menuDatabase = new Hashtable<>();
     //private Map<String, Comment> commentDatabase = new Hashtable<>();
@@ -140,7 +136,27 @@ public class MenuController {
         
         model.addAttribute("foodMenu", foodMenu);
         model.addAttribute("UserCart", this.cart);
-        return new ModelAndView("cart");
+        return new ModelAndView("cart", "recordForm", new Form());
+    }
+    
+    public static class Form {
+        private String order;
+
+        public String getOrder() {
+            return order;
+        }
+
+        public void setOrder(String order) {
+            this.order = order;
+        }
+        
+
+    }
+    
+    @PostMapping("/cart")
+    public String create(Form form, Principal principal) throws IOException {
+        long recordId = recordService.createRecord(principal.getName(), form.getOrder());
+        return "redirect:/menu/list";
     }
     
     @GetMapping("/addToCart/{foodId}")

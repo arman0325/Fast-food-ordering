@@ -21,10 +21,11 @@
             </c:forEach>
         </table>
         
-        <form>
-            <input type="hidden" id="cartItem" name="cartItem" value="${UserCart}"/>
+        <form:form method="POST" enctype="multipart/form-data"
+                             modelAttribute="recordForm">
+            <form:input type="hidden" path="order" value="${UserCart}"/>
             <button type="submit">submit</button>
-        </form>
+        </form:form>
     </c:otherwise>
 </c:choose>
 

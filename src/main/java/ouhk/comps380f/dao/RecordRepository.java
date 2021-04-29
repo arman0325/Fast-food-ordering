@@ -6,11 +6,11 @@
 package ouhk.comps380f.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ouhk.comps380f.model.NewUser;
+import ouhk.comps380f.model.Record;
 
 /**
  *
  * @author arman
  */
-public interface RecordRepository extends JpaRepository<NewUser, String> {
+public interface RecordRepository extends JpaRepository<Record, Long> {
 }
