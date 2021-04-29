@@ -1,13 +1,13 @@
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\Comment.java
-D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\controller\TicketUserController.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\exception\TicketNotFound.java
+D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\controller\UserController.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\Attachment.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\controller\IndexController.java
-D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\TicketUser.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\dao\UserRoleRepository.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\UserRole.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\database\DatabaseOperation.java
-D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\service\TicketUserService.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\controller\MenuController.java
-D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\dao\TicketUserRepository.java
+D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\service\UserService.java
+D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\NewUser.java
+D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\dao\UserRepository.java
 D:\arman\Desktop\FTP\COMPS380F\Project\FastFoodOrdering\src\main\java\ouhk\comps380f\model\Food.java
