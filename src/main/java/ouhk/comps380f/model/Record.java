@@ -30,6 +30,9 @@ public class Record implements Serializable {
 
     @Column(name = "orderlist")
     private String orderlist;
+    
+    @Column(name = "orderdate")
+    private String orderdate;
 
     public long getId() {
         return order_id;
@@ -53,6 +56,14 @@ public class Record implements Serializable {
 
     public void setOrderlist(String orderlist) {
         this.orderlist = orderlist;
+    }
+
+    public String getOrderdate() {
+        return orderdate;
+    }
+
+    public void setOrderdate(String orderdate) {
+        this.orderdate = orderdate;
     }
 
 

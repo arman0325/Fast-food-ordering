@@ -13,6 +13,7 @@
             <a href="<c:url value="/user" />"><spring:message code="orderSystem.manageAccount" /></a><br /><br />
         </security:authorize>
         <security:authorize access="isAuthenticated()">
+            <a href="<c:url value="/user/recordList" />">Record</a>
             <c:url var="logoutUrl" value="/logout"/>
             <form action="${logoutUrl}" method="post">
                 <input type="submit" value="<spring:message code="orderSystem.logout" />" />

@@ -156,7 +156,7 @@ public class MenuController {
     @PostMapping("/cart")
     public String create(Form form, Principal principal) throws IOException {
         long recordId = recordService.createRecord(principal.getName(), form.getOrder());
-        return "redirect:/menu/list";
+        return "redirect:/user/recordList";
     }
     
     @GetMapping("/addToCart/{foodId}")

@@ -6,6 +6,7 @@
 package ouhk.comps380f.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
+import ouhk.comps380f.dao.RecordRepository;
 import ouhk.comps380f.model.NewUser;
 import ouhk.comps380f.dao.UserRepository;
 
@@ -29,6 +31,9 @@ public class UserController {
 
     @Resource
     UserRepository UserRepo;
+    
+    @Resource
+    RecordRepository recordRepo;
 
     @GetMapping({"", "/list"})
     public String list(ModelMap model) {
@@ -116,5 +121,12 @@ public class UserController {
     public View delete(@PathVariable("username") String username) {
         UserRepo.delete(UserRepo.findById(username).orElse(null));
         return new RedirectView("/user/list", true);
+    }
+    
+    @GetMapping("/recordList")
+    public String recordList(ModelMap model, Principal principal) throws IOException {
+        model.addAttribute("NowUser",principal.getName());
+        model.addAttribute("RecordList", recordRepo.findAll());
+        return "recordList";
     }
 }
