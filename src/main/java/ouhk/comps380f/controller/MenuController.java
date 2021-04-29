@@ -35,6 +35,9 @@ public class MenuController {
     DatabaseOperation dbOperation = new DatabaseOperation();
     private Map<String, Food> menuDatabase = new Hashtable<>();
     //private Map<String, Comment> commentDatabase = new Hashtable<>();
+    
+    private Map<String, Integer> cart = new Hashtable<>(); //For save the cart of user
+    
 
     @GetMapping(value = {"", "/list"})
     public String list(ModelMap model) {
@@ -126,5 +129,28 @@ public class MenuController {
         dbOperation.addComment(comment);
         //this.commentDatabase.put(commentId, comment);
         return "redirect:/menu/view/" + form.getId();
+    }
+    
+    @GetMapping("/cart")
+    public ModelAndView create(ModelMap model) {
+        Map<String, String> foodMenu = new Hashtable<>();
+        for (String key: menuDatabase.keySet()){
+            foodMenu.put(key, menuDatabase.get(key).getFoodName());
+        }
+        
+        model.addAttribute("foodMenu", foodMenu);
+        model.addAttribute("UserCart", this.cart);
+        return new ModelAndView("cart");
+    }
+    
+    @GetMapping("/addToCart/{foodId}")
+    public String addToCart(@PathVariable("foodId") String foodId,
+            ModelMap model) throws IOException {
+        Food item = this.menuDatabase.get(foodId);
+        if (!cart.containsKey(foodId)){
+            cart.put(foodId, 0);
+        }
+        cart.put(foodId, cart.get(foodId)+1);
+        return "redirect:/menu/cart";
     }
 }

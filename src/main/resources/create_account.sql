@@ -39,3 +39,14 @@ INSERT INTO user_roles(username, role) VALUES ('tim', 'ROLE_ADMIN');
 INSERT INTO users(username, password, fullName, phone, address) VALUES ('peter', '{noop}peterpw', 'Yu Hui', '57448993', 'Kowloon Tong');
 INSERT INTO user_roles(username, role) VALUES ('peter', 'ROLE_USER');
 
+
+CREATE TABLE records(
+    order_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    username VARCHAR(50) NOT NULL,
+    orderlist VARCHAR(255) NOT NULL,
+    orderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (order_id),
+    FOREIGN KEY (username) REFERENCES users(username)
+)
+
+INSERT INTO records(username, orderlist) VALUES ('peter', '[1,2;2,3]');

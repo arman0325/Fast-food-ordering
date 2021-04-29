@@ -27,19 +27,19 @@ import ouhk.comps380f.dao.UserRepository;
 public class UserService implements UserDetailsService {
 
     @Resource
-    UserRepository ticketUserRepo;
+    UserRepository UserRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        NewUser ticketUser = ticketUserRepo.findById(username).orElse(null);
-        if (ticketUser == null) {
+        NewUser User = UserRepo.findById(username).orElse(null);
+        if (User == null) {
             throw new UsernameNotFoundException("User '" + username + "' not found.");
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (UserRole role : ticketUser.getRoles()) {
+        for (UserRole role : User.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
-        return new User(ticketUser.getUsername(), ticketUser.getPassword(), authorities);
+        return new User(User.getUsername(), User.getPassword(), authorities);
     }
 }

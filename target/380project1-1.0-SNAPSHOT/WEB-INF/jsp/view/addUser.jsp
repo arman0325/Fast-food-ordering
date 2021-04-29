@@ -11,15 +11,10 @@
         <link href="<c:url value="/assets/css/bootstrap.min.css" />" rel="stylesheet">
     </head>
     <body>
-        <c:url var="logoutUrl" value="/logout"/>
-        <form action="${logoutUrl}" method="post">
-            <input type="submit" value="Log out" />
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        </form>
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
             <h2><spring:message code="register.title" /></h2>
             <form:form method="POST" enctype="multipart/form-data"
-                       modelAttribute="ticketUser">
+                       modelAttribute="User">
                 <div class="form-group">
                     <form:label path="username"><spring:message code="register.username" /></form:label>
                     <form:input type="text" path="username" required="required"  class="form-control" />

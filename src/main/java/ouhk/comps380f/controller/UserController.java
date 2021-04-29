@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping({"", "/list"})
     public String list(ModelMap model) {
-        model.addAttribute("ticketUsers", UserRepo.findAll());
+        model.addAttribute("Users", UserRepo.findAll());
         return "listUser";
     }
 
@@ -97,14 +97,12 @@ public class UserController {
 
     }
 
-    @
-            GetMapping("/create")
+    @GetMapping("/create")
     public ModelAndView create() {
-        return new ModelAndView("addUser", "ticketUser", new Form());
+        return new ModelAndView("addUser", "User", new Form());
     }
 
-    @
-            PostMapping("/create")
+    @PostMapping("/create")
     public View create(Form form) throws IOException {
         NewUser user = new NewUser(form.getUsername(),
                 form.getPassword(), form.getRoles(), form.getFullName(),
@@ -114,9 +112,8 @@ public class UserController {
         return new RedirectView("/user/list", true);
     }
 
-    @
-            GetMapping("/delete/{username}")
-    public View deleteTicket(@PathVariable("username") String username) {
+    @GetMapping("/delete/{username}")
+    public View delete(@PathVariable("username") String username) {
         UserRepo.delete(UserRepo.findById(username).orElse(null));
         return new RedirectView("/user/list", true);
     }

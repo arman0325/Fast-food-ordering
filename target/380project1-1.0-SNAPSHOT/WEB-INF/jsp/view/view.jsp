@@ -18,11 +18,11 @@
             <a href="<c:url value="/login" />"><button>Login</button></a><br />
         </security:authorize>
 
-        <h2>Fast Food #${foodId}: <c:out value="${food.foodName}" /></h2>
+        <h2><spring:message code="viewList.title" />${foodId}: <c:out value="${food.foodName}" /></h2>
 
         <i><c:out value="${food.description}" /></i><br /><br />
-        Price: $<c:out value="${food.price}" /><br /><br />
-        Availability: <c:out value="${food.availability}" /><br /><br />
+        <spring:message code="viewList.price" />: $<c:out value="${food.price}" /><br /><br />
+        <spring:message code="viewList.ava" />: <c:out value="${food.availability}" /><br /><br />
         <c:if test="${food.numberOfAttachments > 0}">
             Attachments:
             <c:forEach items="${food.attachments}" var="attachment"
@@ -32,8 +32,8 @@
                     <c:out value="${attachment.name}" /></a>
             </c:forEach><br /><br />
         </c:if>
-        <a href="<c:url value="/menu" />">Return to list fast foods</a>
-        <br /><br /><h2>Comment</h2>
+        <a href="<c:url value="/menu" />"><spring:message code="viewList.backURL" /></a>
+        <br /><br /><h2><spring:message code="viewList.comTitle" /></h2>
 
         <security:authorize access="isAuthenticated()">
             <form:form method="POST" enctype="multipart/form-data"
@@ -44,7 +44,7 @@
             <input type="hidden" name="id" value="${foodId}"/>
             <form:textarea path="body" rows="5" cols="30" /><br />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input type="submit" value="Comment"/>
+            <input type="submit" value="<spring:message code="viewList.comBtn" />"/>
         </form:form>
     </security:authorize>
 
