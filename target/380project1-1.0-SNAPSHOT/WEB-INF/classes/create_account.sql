@@ -25,14 +25,6 @@ CREATE TABLE user_roles (
     FOREIGN KEY (username) REFERENCES users(username)
 );
 
-CREATE TABLE comments (
-    commentId VARCHAR(50) NOT NULL,
-    itemId VARCHAR(50) NOT NULL,
-    userName VARCHAR(50) NOT NULL,
-    contents VARCHAR(50) NOT NULL,
-    PRIMARY KEY (commentId)
-);
-
 INSERT INTO users(username, password, fullName, phone, address) VALUES ('tim', '{noop}timpw', 'Yuen Yiu Man', '66227788', 'Kwai Chung');
 INSERT INTO user_roles(username, role) VALUES ('tim', 'ROLE_ADMIN');
 
@@ -47,6 +39,6 @@ CREATE TABLE records(
     orderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (order_id),
     FOREIGN KEY (username) REFERENCES users(username)
-)
+);
 
 INSERT INTO records(username, orderlist) VALUES ('peter', '{2=3, 1=2}');

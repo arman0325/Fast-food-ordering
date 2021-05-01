@@ -8,6 +8,7 @@ package ouhk.comps380f.controller;
 import java.io.IOException;
 import java.security.Principal;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,12 +32,15 @@ public class UserController {
 
     @Resource
     UserRepository UserRepo;
-    
+
     @Resource
     RecordRepository recordRepo;
 
     @GetMapping({"", "/list"})
-    public String list(ModelMap model) {
+    public String list(ModelMap model, Principal principal, HttpServletRequest request) {
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            return "redirect:/menu/list";
+        }
         model.addAttribute("Users", UserRepo.findAll());
         return "listUser";
     }
@@ -98,7 +102,6 @@ public class UserController {
         public void setAddress(String address) {
             this.address = address;
         }
-        
 
     }
 
@@ -118,14 +121,20 @@ public class UserController {
     }
 
     @GetMapping("/delete/{username}")
-    public View delete(@PathVariable("username") String username) {
+    public View delete(@PathVariable("username") String username, Principal principal, HttpServletRequest request) {
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            return new RedirectView("/menu/list", true);
+        }
         UserRepo.delete(UserRepo.findById(username).orElse(null));
         return new RedirectView("/user/list", true);
     }
-    
+
     @GetMapping("/recordList")
-    public String recordList(ModelMap model, Principal principal) throws IOException {
-        model.addAttribute("NowUser",principal.getName());
+    public String recordList(ModelMap model, Principal principal, HttpServletRequest request) throws IOException {
+        if (!request.isUserInRole("ROLE_USER") && !request.isUserInRole("ROLE_ADMIN")) {
+            return "redirect:/menu/list";
+        }
+        model.addAttribute("NowUser", principal.getName());
         model.addAttribute("RecordList", recordRepo.findAll());
         return "recordList";
     }

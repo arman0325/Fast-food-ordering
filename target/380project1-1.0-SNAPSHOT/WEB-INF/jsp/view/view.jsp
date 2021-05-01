@@ -23,13 +23,14 @@
         <i><c:out value="${food.description}" /></i><br /><br />
         <spring:message code="viewList.price" />: $<c:out value="${food.price}" /><br /><br />
         <spring:message code="viewList.ava" />: <c:out value="${food.availability}" /><br /><br />
-        <c:if test="${food.numberOfAttachments > 0}">
-            Attachments:
+        <c:if test="${fn:length(food.attachments) > 0}">
+            Attachments:<br />
             <c:forEach items="${food.attachments}" var="attachment"
                        varStatus="status">
                 <c:if test="${!status.first}">, </c:if>
-                <a href="<c:url value="/menu/${foodId}/attachment/${attachment.name}" />">
-                    <c:out value="${attachment.name}" /></a>
+
+                    <img src="data:${attachment.mimeContentType};base64,${attachment.getByteArrayString()}" width="300" height="300"><br />
+
             </c:forEach><br /><br />
         </c:if>
         <a href="<c:url value="/menu" />"><spring:message code="viewList.backURL" /></a>
@@ -57,10 +58,11 @@
             <table>
                 <c:forEach items="${commentDatabase}" var="entry">
                     <tr>
-                        <th>${entry.value.userName}</th>
-                        <th>${entry.value.contents}</th>
+                        <th>${entry.timestamp}</th>
+                        <th>${entry.userName}</th>
+                        <th>${entry.contents}</th>
                         <th><security:authorize access="hasRole('ADMIN')">
-                                [<a href="<c:url value="/menu/view/${foodId}/delete/${entry.key}" />">Delete</a>]
+                                [<a href="<c:url value="/menu/view/${foodId}/delete/${entry.id}" />">Delete</a>]
                             </security:authorize> </th>
                     </tr>
                 </c:forEach>

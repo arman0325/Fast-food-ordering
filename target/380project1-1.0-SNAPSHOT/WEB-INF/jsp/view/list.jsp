@@ -11,6 +11,7 @@
         
         <security:authorize access="hasRole('ADMIN')">
             <a href="<c:url value="/user" />"><spring:message code="orderSystem.manageAccount" /></a><br /><br />
+            <a href="<c:url value="/menu/create" />"><spring:message code="viewList.create" /></a><br /><br />
         </security:authorize>
         <security:authorize access="isAuthenticated()">
             <a href="<c:url value="/user/recordList" />">Record</a>
@@ -32,16 +33,18 @@
             <c:otherwise>
                 <spring:message code="orderSystem.listTitle" /><br /><br />
                 <c:forEach items="${menuDatabase}" var="entry" varStatus="loop">
-                    ${loop.index + 1}. <a href="<c:url value="/menu/view/${entry.key}" />">
-                        <c:out value="${entry.value.foodName}" /></a>
+                    ${loop.index + 1}. <a href="<c:url value="/menu/view/${entry.id}" />">
+                        <c:out value="${entry.foodName}" /></a>
 
                     <security:authorize access="isAuthenticated()">
-                        [<a href="<c:url value="/menu/addToCart/${entry.key}" />"><spring:message code="orderSystem.addToCart" /></a>]
+                        <c:if test="${entry.availability==true}">
+                            [<a href="<c:url value="/menu/addToCart/${entry.id}" />"><spring:message code="orderSystem.addToCart" /></a>]
+                        </c:if>
                     </security:authorize>
 
                     <security:authorize access="hasRole('ADMIN')">
-                        [<a href="<c:url value="/ticket/edit/${entry.key}" />"><spring:message code="orderSystem.edit" /></a>]
-                        [<a href="<c:url value="/ticket/delete/${entry.key}" />"><spring:message code="orderSystem.delete" /></a>]
+                        [<a href="<c:url value="/menu/availability/${entry.id}" />"><spring:message code="orderSystem.availability" /></a>]
+                        [<a href="<c:url value="/menu/delete/${entry.id}" />"><spring:message code="orderSystem.delete" /></a>]
                     </security:authorize> 
                     <br />
                 </c:forEach>

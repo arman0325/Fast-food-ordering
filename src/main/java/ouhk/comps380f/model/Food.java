@@ -1,24 +1,42 @@
 package ouhk.comps380f.model;
 
 import java.io.Serializable;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+@Entity
 public class Food implements Serializable {
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    
+    @Column(name = "name")
     private String foodName;
     private String description;
+    
     private double price;
     private boolean availability;
-    private Map<String, Attachment> attachments = new Hashtable<>();
-    private Map<String, Comment> comments = new Hashtable<>();
     
-    public String getId() {
+    @OneToMany(mappedBy = "food", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Attachment> attachments = new ArrayList<>();
+    
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -54,19 +72,16 @@ public class Food implements Serializable {
         this.availability = availability;
     }
     
-    public Attachment getAttachment(String name) {
-        return this.attachments.get(name);
+   public List<Attachment> getAttachments() {
+        return attachments;
     }
 
-    public Collection<Attachment> getAttachments() {
-        return this.attachments.values();
-    }
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }    
 
-    public void addAttachment(Attachment attachment) {
-        this.attachments.put(attachment.getName(), attachment);
-    }
-
-    public int getNumberOfAttachments() {
-        return this.attachments.size();
+    public void deleteAttachment(Attachment attachment) {
+        attachment.setFood(null);
+        this.attachments.remove(attachment);
     }
 }

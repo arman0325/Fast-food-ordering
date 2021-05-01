@@ -3,10 +3,12 @@ package ouhk.comps380f.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,9 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import ouhk.comps380f.model.Comment;
 import ouhk.comps380f.model.Food;
 import ouhk.comps380f.database.DatabaseOperation;
+import ouhk.comps380f.exception.FoodNotFound;
+import ouhk.comps380f.service.AttachmentService;
+import ouhk.comps380f.service.CommentService;
+import ouhk.comps380f.service.FoodService;
 import ouhk.comps380f.service.RecordService;
 
 @Controller
@@ -28,42 +35,48 @@ public class MenuController {
     @Autowired
     private RecordService recordService;  
     
+    @Autowired
+    private FoodService foodService;
+
+    @Autowired
+    private AttachmentService attachmentService;
+    
+    @Autowired
+    private CommentService commentService;
+    
     DatabaseOperation dbOperation = new DatabaseOperation();
     private Map<String, Food> menuDatabase = new Hashtable<>();
     //private Map<String, Comment> commentDatabase = new Hashtable<>();
     
     private Map<String, Integer> cart = new Hashtable<>(); //For save the cart of user
-    
 
     @GetMapping(value = {"", "/list"})
     public String list(ModelMap model) {
-        Food item1 = new Food();
-        item1.setId("1");
-        item1.setFoodName("Hamburger");
-        item1.setDescription("A hamburger with cheese.");
-        item1.setPrice(20);
-        item1.setAvailability(true);
-        
-        Food item2 = new Food();
-        item2.setId("2");
-        item2.setFoodName("Fish and Chips");
-        item2.setDescription("A delicious Fish and Chips.");
-        item2.setPrice(25.5);
-        item2.setAvailability(true);
-        
-        menuDatabase.put(item2.getId(), item2);
-        menuDatabase.put(item1.getId(), item1);
-        
-        model.addAttribute("menuDatabase", menuDatabase);
+        model.addAttribute("menuDatabase", foodService.getFoods());
         return "list";
+    }
+    
+    @GetMapping("/create")
+    public ModelAndView create(HttpServletRequest request) {
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            return new ModelAndView("list", "menuDatabase", foodService.getFoods());
+        }
+        return new ModelAndView("add", "foodForm", new FoodForm());
+    }
+    
+    @PostMapping("/create")
+    public String create(FoodForm form, Principal principal) throws IOException {
+        long foodId = foodService.createFood(form.getFoodName(),
+                form.getDescription(), form.getPrice(), form.isAvailability(), 
+                form.getAttachments());
+        return "redirect:/menu/view/" + foodId;
     }
     
     public static class CommentForm {
 
         private String name;
-        private String id;
+        private long id;
         private String body;
-        private List<MultipartFile> attachments;
         
         public String getName() {
             return name;
@@ -73,11 +86,11 @@ public class MenuController {
             this.name = name;
         }
         
-        public String getId() {
+        public long getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(long id) {
             this.id = id;
         }
 
@@ -87,6 +100,47 @@ public class MenuController {
 
         public void setBody(String body) {
             this.body = body;
+        }
+    }
+    
+    public static class FoodForm {
+
+        private String foodName;
+        private String description;
+        private double price;
+        private boolean availability;
+        private List<MultipartFile> attachments;
+
+        public String getFoodName() {
+            return foodName;
+        }
+
+        public void setFoodName(String foodName) {
+            this.foodName = foodName;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
+        }
+
+        public boolean isAvailability() {
+            return availability;
+        }
+
+        public void setAvailability(boolean availability) {
+            this.availability = availability;
         }
 
         public List<MultipartFile> getAttachments() {
@@ -99,32 +153,43 @@ public class MenuController {
     }
     
     @GetMapping("/view/{foodId}")
-    public String view(@PathVariable("foodId") String foodId,
+    public String view(@PathVariable("foodId") long foodId,
             ModelMap model) {
-        Food item = this.menuDatabase.get(foodId);
+        Food item = foodService.getFood(foodId);
         if (item == null) {
             return "redirect:/menu/list";
         }
+        
         model.addAttribute("foodId", foodId);
         model.addAttribute("food", item);
         model.addAttribute("commentForm", new CommentForm());
-        model.addAttribute("commentDatabase", dbOperation.getCommentList(foodId));
+        model.addAttribute("commentDatabase", commentService.getCommentByFoodId(foodId));
         return "view";
     }
     
     @PostMapping("/view/{foodId}")
-    public String create(CommentForm form, Principal principal) throws IOException {
-        String commentId = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        commentId = principal.getName() + commentId;
+    public String view(CommentForm form, @PathVariable("foodId") long foodId,
+            Principal principal) throws IOException, FoodNotFound {
+        String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        System.out.println(timestamp);
+        System.out.println(form.getId());
         Comment comment = new Comment();
-        comment.setCommentId(commentId);
+        comment.setTimestamp(timestamp);
         comment.setUserName(principal.getName());
         comment.setContents(form.getBody());
-        comment.setItemId(form.getId());
+        comment.setFoodId(foodId);
         
-        dbOperation.addComment(comment);
-        //this.commentDatabase.put(commentId, comment);
-        return "redirect:/menu/view/" + form.getId();
+        commentService.addComment(comment);
+        return "redirect:/menu/view/" + foodId;
+    }
+    
+    @GetMapping("/view/{foodId}/delete/{commentId}")
+    public String delete(Principal principal, 
+            @PathVariable("foodId") long foodId, 
+            @PathVariable("commentId") long commentId) 
+            throws IOException, FoodNotFound {
+        commentService.deleteComment(commentId);
+        return "redirect:/menu/view/" + foodId;
     }
     
     @GetMapping("/cart")
@@ -149,8 +214,18 @@ public class MenuController {
         public void setOrder(String order) {
             this.order = order;
         }
-        
+    }
+    
+    public static class AvailabilityForm {
+        private boolean availability;
 
+        public boolean getAvailability() {
+            return availability;
+        }
+
+        public void setAvailability(boolean availability) {
+            this.availability = availability;
+        }
     }
     
     @PostMapping("/cart")
@@ -168,5 +243,45 @@ public class MenuController {
         }
         cart.put(foodId, cart.get(foodId)+1);
         return "redirect:/menu/cart";
+    }
+    
+    @GetMapping("/delete/{foodId}")
+    public String delete(@PathVariable("foodId") long foodId,
+            ModelMap model, HttpServletRequest request) throws IOException, FoodNotFound {
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            return "redirect:/menu/list";
+        }
+        foodService.delete(foodId);
+        return "redirect:/menu/list";
+    }
+    
+    @GetMapping("/availability/{foodId}")
+    public ModelAndView showEdit(@PathVariable("foodId") long foodId,
+            Principal principal, HttpServletRequest request) {
+        Food food = foodService.getFood(foodId);
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            return new ModelAndView(new RedirectView("/menu/list", true));
+        }
+
+        ModelAndView modelAndView = new ModelAndView("setAvailability");
+        modelAndView.addObject("food", food);
+
+        AvailabilityForm availabilityForm = new AvailabilityForm();
+        modelAndView.addObject("availabilityForm", availabilityForm);
+
+        return modelAndView;
+    }
+    
+    @PostMapping("/availability/{foodId}")
+    public String edit(@PathVariable("foodId") long foodId, AvailabilityForm form,
+            Principal principal, HttpServletRequest request)
+            throws IOException, FoodNotFound {
+        Food food = foodService.getFood(foodId);
+        if (food == null || (!request.isUserInRole("ROLE_ADMIN"))) {
+            return "redirect:/menu/list";
+        }
+
+        foodService.changeAvailability(foodId, form.getAvailability());
+        return "redirect:/menu/view/" + foodId;
     }
 }

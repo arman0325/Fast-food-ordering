@@ -1,27 +1,52 @@
 package ouhk.comps380f.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class Comment implements Serializable {
-    private String commentId;
-    private String itemId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    
+    @Column(name = "timestamp")
+    private String timestamp;
+    
+    @Column(name = "userName")
     private String userName;
+    
+    @Column(name = "contents")
     private String contents;
+    
+    @Column(name = "food_id")
+    private long foodId;
 
-    public String getCommentId() {
-        return commentId;
+    public long getId() {
+        return id;
     }
 
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public long getFoodId() {
+        return foodId;
+    }
+
+    public void setFoodId(long foodId) {
+        this.foodId = foodId;
     }
 
     public String getUserName() {
