@@ -25,8 +25,10 @@ ouhk\comps380f\model\Food.class
 ouhk\comps380f\service\AttachmentServiceImpl.class
 ouhk\comps380f\dao\AttachmentRepository.class
 ouhk\comps380f\service\FoodServicelmpl.class
+ouhk\comps380f\exception\TicketNotFound.class
 ouhk\comps380f\database\DatabaseOperation.class
 ouhk\comps380f\exception\FoodNotFound.class
+ouhk\comps380f\controller\MenuController$AvailabilityForm.class
 ouhk\comps380f\model\NewUser.class
 ouhk\comps380f\controller\MenuController$FoodForm.class
 ouhk\comps380f\model\Attachment.class

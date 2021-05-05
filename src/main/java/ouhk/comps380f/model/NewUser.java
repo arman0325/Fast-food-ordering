@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -24,10 +25,15 @@ import javax.persistence.Table;
 public class NewUser implements Serializable {
 
     @Id
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
     private String password;
+    @Column(name = "fullname")
     private String fullName;
+    @Column(name = "phone")
     private String phone;
+    @Column(name = "address")
     private String address;
     
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,

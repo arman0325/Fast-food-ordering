@@ -121,7 +121,9 @@ public class UserController {
     }
     
     @GetMapping("/editInfo")
-    public ModelAndView editInfo() {
+    public ModelAndView editInfo(ModelMap model, Principal principal) {
+        model.addAttribute("Users", UserRepo.findAll());
+        model.addAttribute("NowUser", principal.getName());
         return new ModelAndView("editInfo", "User", new Form());
     }
 
