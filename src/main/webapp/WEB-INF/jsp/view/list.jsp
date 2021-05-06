@@ -14,7 +14,8 @@
             <a href="<c:url value="/menu/create" />"><spring:message code="viewList.create" /></a><br /><br />
         </security:authorize>
         <security:authorize access="isAuthenticated()">
-            <a href="<c:url value="/user/recordList" />">Record</a>
+            <a href="<c:url value="/user/recordList" />"><spring:message code="orderSystem.record" /></a>
+            <a href="<c:url value="/menu/cart" />"><spring:message code="orderSystem.cart" /></a>
             <a href="<c:url value="/user/editInfo" />"><spring:message code="edit.portal" /></a>
             <c:url var="logoutUrl" value="/logout"/>
             <form action="${logoutUrl}" method="post">
