@@ -1,7 +1,7 @@
 <%-- 
-    Document   : recordList
-    Created on : 2021年4月29日, 下午08:25:54
-    Author     : arman
+   Document   : recordList
+   Created on : 2021年4月29日, 下午08:25:54
+   Author     : arman
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,12 +19,11 @@
             <c:otherwise>
                 <table>
                     <c:forEach items="${RecordList}" var="recordItem">
-                        <c:if test="${recordItem.userName==NowUser}">
-                            <tr>
-                                <td>${recordItem.orderlist}</td>
-                                <td>${recordItem.orderdate}</td>
-                            </tr>
-                        </c:if>
+                        <tr>
+                            <td>${recordItem.orderlist}</td>
+
+                            <td>${recordItem.orderdate}</td>
+                        </tr>
                     </c:forEach>
                 </table>
             </c:otherwise>

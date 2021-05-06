@@ -37,9 +37,9 @@ CREATE TABLE records(
     order_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     username VARCHAR(50) NOT NULL,
     orderlist VARCHAR(255) NOT NULL,
-    orderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    orderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,,
     PRIMARY KEY (order_id),
     FOREIGN KEY (username) REFERENCES users(username)
 );
 
-INSERT INTO records(username, orderlist) VALUES ('peter', '{2=3, 1=2}');
+INSERT INTO records(username, orderlist) VALUES ('peter', '{Hamburger=1, Big mac=2}');

@@ -7,8 +7,11 @@ package ouhk.comps380f.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +24,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import ouhk.comps380f.dao.RecordRepository;
 import ouhk.comps380f.model.NewUser;
 import ouhk.comps380f.dao.UserRepository;
+import ouhk.comps380f.model.Record;
+import ouhk.comps380f.service.FoodService;
 
 /**
  *
@@ -35,6 +40,9 @@ public class UserController {
 
     @Resource
     RecordRepository recordRepo;
+    
+    @Autowired
+    private FoodService foodService;
 
     @GetMapping({"", "/list"})
     public String list(ModelMap model, Principal principal, HttpServletRequest request) {
@@ -151,8 +159,17 @@ public class UserController {
         if (!request.isUserInRole("ROLE_USER") && !request.isUserInRole("ROLE_ADMIN")) {
             return "redirect:/menu/list";
         }
+        List<Record> record = new ArrayList<Record>();
+        record = recordRepo.findAll();
+        List<Record> UserRecord = new ArrayList<Record>();
+        for (Record r:record){
+            if (r.getUserName().equals(principal.getName())){
+                UserRecord.add(r);
+            }
+        }
+        model.addAttribute("menuDatabase", foodService.getFoods());  
         model.addAttribute("NowUser", principal.getName());
-        model.addAttribute("RecordList", recordRepo.findAll());
+        model.addAttribute("RecordList", UserRecord);
         return "recordList";
     }
 }

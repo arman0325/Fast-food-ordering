@@ -5,11 +5,14 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,23 +34,23 @@ import ouhk.comps380f.service.RecordService;
 @Controller
 @RequestMapping("/menu")
 public class MenuController {
-    
+
     @Autowired
-    private RecordService recordService;  
-    
+    private RecordService recordService;
+
     @Autowired
     private FoodService foodService;
 
     @Autowired
     private AttachmentService attachmentService;
-    
+
     @Autowired
     private CommentService commentService;
-    
+
     DatabaseOperation dbOperation = new DatabaseOperation();
     private Map<String, Food> menuDatabase = new Hashtable<>();
     //private Map<String, Comment> commentDatabase = new Hashtable<>();
-    
+
     private Map<String, Integer> cart = new Hashtable<>(); //For save the cart of user
 
     @GetMapping(value = {"", "/list"})
@@ -55,7 +58,7 @@ public class MenuController {
         model.addAttribute("menuDatabase", foodService.getFoods());
         return "list";
     }
-    
+
     @GetMapping("/create")
     public ModelAndView create(HttpServletRequest request) {
         if (!request.isUserInRole("ROLE_ADMIN")) {
@@ -63,21 +66,21 @@ public class MenuController {
         }
         return new ModelAndView("add", "foodForm", new FoodForm());
     }
-    
+
     @PostMapping("/create")
     public String create(FoodForm form, Principal principal) throws IOException {
         long foodId = foodService.createFood(form.getFoodName(),
-                form.getDescription(), form.getPrice(), form.isAvailability(), 
+                form.getDescription(), form.getPrice(), form.isAvailability(),
                 form.getAttachments());
         return "redirect:/menu/view/" + foodId;
     }
-    
+
     public static class CommentForm {
 
         private String name;
         private long id;
         private String body;
-        
+
         public String getName() {
             return name;
         }
@@ -85,7 +88,7 @@ public class MenuController {
         public void setName(String name) {
             this.name = name;
         }
-        
+
         public long getId() {
             return id;
         }
@@ -102,7 +105,7 @@ public class MenuController {
             this.body = body;
         }
     }
-    
+
     public static class FoodForm {
 
         private String foodName;
@@ -151,7 +154,7 @@ public class MenuController {
             this.attachments = attachments;
         }
     }
-    
+
     @GetMapping("/view/{foodId}")
     public String view(@PathVariable("foodId") long foodId,
             ModelMap model) {
@@ -159,14 +162,14 @@ public class MenuController {
         if (item == null) {
             return "redirect:/menu/list";
         }
-        
+
         model.addAttribute("foodId", foodId);
         model.addAttribute("food", item);
         model.addAttribute("commentForm", new CommentForm());
         model.addAttribute("commentDatabase", commentService.getCommentByFoodId(foodId));
         return "view";
     }
-    
+
     @PostMapping("/view/{foodId}")
     public String view(CommentForm form, @PathVariable("foodId") long foodId,
             Principal principal) throws IOException, FoodNotFound {
@@ -178,33 +181,34 @@ public class MenuController {
         comment.setUserName(principal.getName());
         comment.setContents(form.getBody());
         comment.setFoodId(foodId);
-        
+
         commentService.addComment(comment);
         return "redirect:/menu/view/" + foodId;
     }
-    
+
     @GetMapping("/view/{foodId}/delete/{commentId}")
-    public String delete(Principal principal, 
-            @PathVariable("foodId") long foodId, 
-            @PathVariable("commentId") long commentId) 
+    public String delete(Principal principal,
+            @PathVariable("foodId") long foodId,
+            @PathVariable("commentId") long commentId)
             throws IOException, FoodNotFound {
         commentService.deleteComment(commentId);
         return "redirect:/menu/view/" + foodId;
     }
-    
+
     @GetMapping("/cart")
-    public ModelAndView create(ModelMap model) {
-        Map<String, String> foodMenu = new Hashtable<>();
-        for (String key: menuDatabase.keySet()){
-            foodMenu.put(key, menuDatabase.get(key).getFoodName());
+    public ModelAndView create(ModelMap model, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("cart") == null) {
+            session.setAttribute("cart", new Hashtable<>());
         }
-        
-        model.addAttribute("foodMenu", foodMenu);
-        model.addAttribute("UserCart", this.cart);
+        Map<String, Integer> cart = (Map<String, Integer>) session.getAttribute("cart");
+        model.addAttribute("UserCart", cart);
         return new ModelAndView("cart", "recordForm", new Form());
     }
-    
+
     public static class Form {
+
         private String order;
 
         public String getOrder() {
@@ -215,8 +219,9 @@ public class MenuController {
             this.order = order;
         }
     }
-    
+
     public static class AvailabilityForm {
+
         private boolean availability;
 
         public boolean getAvailability() {
@@ -227,24 +232,47 @@ public class MenuController {
             this.availability = availability;
         }
     }
-    
+
     @PostMapping("/cart")
-    public String create(Form form, Principal principal) throws IOException {
+    public String create(Form form, Principal principal, HttpServletRequest request) throws IOException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("cart") == null) {
+            session.setAttribute("cart", new Hashtable<>());
+        }
+        Map<String, Integer> cart = (Map<String, Integer>) session.getAttribute("cart");
         long recordId = recordService.createRecord(principal.getName(), form.getOrder());
+        cart.clear();
         return "redirect:/user/recordList";
     }
-    
+
     @GetMapping("/addToCart/{foodId}")
     public String addToCart(@PathVariable("foodId") String foodId,
-            ModelMap model) throws IOException {
-        Food item = this.menuDatabase.get(foodId);
-        if (!cart.containsKey(foodId)){
-            cart.put(foodId, 0);
+            ModelMap model, HttpServletRequest request) throws IOException {
+        String name="";
+        List<Food> food = new ArrayList<Food>();
+        food = foodService.getFoods();
+        for (Food f:food){
+            if(Long.toString(f.getId()).equals(foodId)){
+                name = f.getFoodName();
+            }
         }
-        cart.put(foodId, cart.get(foodId)+1);
+        HttpSession session = request.getSession();
+        if (session.getAttribute("cart") == null) {
+            session.setAttribute("cart", new Hashtable<>());
+        }
+        Map<String, Integer> cart = (Map<String, Integer>) session.getAttribute("cart");
+
+        if (!cart.containsKey(name)) {
+            cart.put(name, 0);
+
+        }
+
+        cart.put(name, cart.get(name) + 1);
+
         return "redirect:/menu/cart";
+
     }
-    
+
     @GetMapping("/delete/{foodId}")
     public String delete(@PathVariable("foodId") long foodId,
             ModelMap model, HttpServletRequest request) throws IOException, FoodNotFound {
@@ -254,7 +282,7 @@ public class MenuController {
         foodService.delete(foodId);
         return "redirect:/menu/list";
     }
-    
+
     @GetMapping("/availability/{foodId}")
     public ModelAndView showEdit(@PathVariable("foodId") long foodId,
             Principal principal, HttpServletRequest request) {
@@ -271,7 +299,7 @@ public class MenuController {
 
         return modelAndView;
     }
-    
+
     @PostMapping("/availability/{foodId}")
     public String edit(@PathVariable("foodId") long foodId, AvailabilityForm form,
             Principal principal, HttpServletRequest request)
