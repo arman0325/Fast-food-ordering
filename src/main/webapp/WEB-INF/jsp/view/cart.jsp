@@ -11,6 +11,8 @@
         <link href="<c:url value="/assets/css/bootstrap.min.css" />" rel="stylesheet">
     </head>
     <body>
+        <%@ include file="header.jsp" %>
+        <div class="container">
         <a href="<c:url value="/menu" />"><spring:message code="viewList.backURL" /></a>
         <c:choose>
             <c:when test="${empty UserCart}">
@@ -41,7 +43,7 @@
                 </form:form>
             </c:otherwise>
         </c:choose>
-
+        </div>
 
     </body>
 </html>

@@ -27,9 +27,9 @@
             Attachments:<br />
             <c:forEach items="${food.attachments}" var="attachment"
                        varStatus="status">
-                <c:if test="${!status.first}">, </c:if>
+                
 
-                    <img src="data:${attachment.mimeContentType};base64,${attachment.getByteArrayString()}" width="300" height="300"><br />
+                    <img src="data:${attachment.mimeContentType};base64,${attachment.getByteArrayString()}" width="150" height="150"><br />
 
             </c:forEach><br /><br />
         </c:if>

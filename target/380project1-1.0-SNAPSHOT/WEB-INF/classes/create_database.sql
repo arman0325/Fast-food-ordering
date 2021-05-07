@@ -37,7 +37,7 @@ CREATE TABLE records(
     order_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     username VARCHAR(50) NOT NULL,
     orderlist VARCHAR(255) NOT NULL,
-    orderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,,
+    orderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY (order_id)
 );
 
@@ -68,7 +68,8 @@ CREATE TABLE comment (
     food_id INTEGER DEFAULT NULL,
     userName VARCHAR(50) NOT NULL,
     contents VARCHAR(50) NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (food_id) REFERENCES food(id)
 );
 
 INSERT INTO food (name, description, price, availability) VALUES 
