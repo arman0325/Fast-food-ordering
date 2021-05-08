@@ -11,9 +11,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link href="<c:url value="/assets/css/bootstrap.min.css" />" rel="stylesheet">
+        <script src="<c:url value="/assets/js/bootstrap.bundle.min.js" />"></script>
     </head>
     <body>
-        <a href="<c:url value="/menu" />"><spring:message code="viewList.backURL" /></a>
+        <%@ include file="header.jsp" %>
+        <main class="container">
+            <div class="py-5 px-3 mt-5">
         <c:choose>
             <c:when test="${empty RecordList}">
                 <i>There are no record.</i>
@@ -39,5 +42,7 @@
                 </table>
             </c:otherwise>
         </c:choose>
+                </div>
+        </main>
     </body>
 </html>
