@@ -14,8 +14,8 @@
         <%@ include file="header.jsp" %>
         <main class="container">
             <div class="py-5 px-3 mt-5">
-                <h2>Users</h2>
-                <a href="<c:url value="/user/create" />">Create a User</a><br /><br />
+                <h2><spring:message code="manage.title" /></h2>
+                <a href="<c:url value="/user/create" />"><spring:message code="manage.link" /></a><br /><br />
                 <c:choose>
                     <c:when test="${fn:length(Users) == 0}">
                         <i>There are no users in the system.</i>
@@ -23,7 +23,10 @@
                     <c:otherwise>
                         <table>
                             <tr>
-                                <th>Username</th><th>Password</th><th>Roles</th><th>Action</th>
+                                <th><spring:message code="manage.username" /></th>
+                                <th><spring:message code="manage.pwd" /></th>
+                                <th><spring:message code="manage.roles" /></th>
+                                <th><spring:message code="manage.action" /></th>
                             </tr>
                             <c:forEach items="${Users}" var="user">
                                 <tr>
@@ -35,7 +38,8 @@
                                         </c:forEach>
                                     </td>
                                     <td>
-                                        [<a href="<c:url value="/user/delete/${user.username}" />">Delete</a>]
+                                        [<a href="<c:url value="/user/delete/${user.username}" />"><spring:message code="manage.del" /></a>]
+                                        [<a href="<c:url value="/user/editInfoAdmin/${user.username}" />"><spring:message code="manage.edit" /></a>]
                                     </td>
                                 </tr>
                             </c:forEach>

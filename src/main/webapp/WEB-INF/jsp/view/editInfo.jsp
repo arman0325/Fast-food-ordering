@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,8 +15,7 @@
                 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
                     <h2><spring:message code="edit.title" /></h2>
-                    <form:form method="POST" enctype="multipart/form-data" modelAttribute="User" name="User" onsubmit="return validateForm()">
-                        <p><spring:message code="edit.info" /></p>
+                    <form:form method="POST" enctype="multipart/form-data" modelAttribute="User" name="User" onsubmit="validateForm()">
                         <c:choose>
                             <c:when test="${empty Users}">
                             </c:when>
@@ -23,14 +23,23 @@
                                 <c:forEach items="${Users}" var="UserA">
                                     <c:if test="${UserA.username==NowUser}">
 
-                                        <div class="form-group mt-2">
+                                        <div class="form-group mt-2 row">
                                             <form:label path="password"><spring:message code="edit.pwd" /></form:label>
-                                            <form:input type="password" path="password" required="required" class="form-control" />
+                                            <div class="col-sm-10">
+                                            <form:input type="password" path="password" class="form-control"/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                            <input type="checkbox" onclick="showPwd()"><spring:message code="edit.show" />
+                                            </div>
                                         </div>
                                         <div class="form-group mt-2">
+                                            <label id="passwordConfirm"><spring:message code="edit.pwdCon" /></label>
+                                            <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-control"/>
+                                            
+                                        </div>
+                                        <div class="form-group mt-2">
+                                             <label id="roles">Role:</label>
                                             <form:checkbox path="roles" value="ROLE_USER" checked="true"  style="display:none"/>ROLE_USER
-                                        </div>
-                                        <div class="form-group mt-2">
                                             <security:authorize access="hasRole('ADMIN')">
                                                 <form:checkbox path="roles" value="ROLE_ADMIN"  style="display:none"/>ROLE_ADMIN
                                             </security:authorize>
@@ -48,10 +57,10 @@
                                             <form:input type="text" path="address" class="form-control" value="${UserA.address}"/>
                                         </div>
                                         <div class="form-group mt-2">
-                                            <p>Old Password</p>
-                                            <input type="text" id="oldPwd" name="oldPwd" >
+                                            <label id="oldPwd"><spring:message code="edit.oldPwd" /></label>
+                                            <input class="form-control" type="password" id="oldPwd" name="oldPwd" >
                                             <input type="hidden" id="oldPwdC" name="oldPwdC" value="${UserA.password}">
-                                            <button type="submit" class="btn btn-primary">Confirm</button>
+                                            <button type="submit" class="btn btn-primary mt-3">Confirm</button>
                                         </div>
 
                                     </c:if>

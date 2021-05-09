@@ -30,8 +30,8 @@ INSERT INTO user_roles(username, role) VALUES ('tim', 'ROLE_ADMIN');
 INSERT INTO users(username, password, fullName, phone, address) VALUES ('peter', '{noop}peterpw', 'Yu Hui', '57448993', 'Kowloon Tong');
 INSERT INTO user_roles(username, role) VALUES ('peter', 'ROLE_USER');
 
-INSERT INTO users(username, password, fullName, phone, address) VALUES ('hahamadrid', '{noop}halamadrid', 'Perez', '34321809', 'Bernabeu');
-INSERT INTO user_roles(username, role) VALUES ('hahamadrid', 'ROLE_USER');
+INSERT INTO users(username, password, fullName, phone, address) VALUES ('ugly', '{noop}ugly', 'Perez', '34321809', 'Bernabeu');
+INSERT INTO user_roles(username, role) VALUES ('ugly', 'ROLE_USER');
 
 CREATE TABLE records(
     order_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),

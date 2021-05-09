@@ -144,6 +144,23 @@ public class UserController {
         UserRepo.save(user);
         return new RedirectView("/user/list", true);
     }
+    
+    @GetMapping("/editInfoAdmin/{username}")
+    public ModelAndView editInfo(@PathVariable("username") String username, ModelMap model) {
+        model.addAttribute("Users", UserRepo.findAll());
+        model.addAttribute("NowUser", username);
+        return new ModelAndView("editInfoAdmin", "User", new Form());
+    }
+    
+    @PostMapping("/editInfoAdmin/{username}")
+    public View editInfo(@PathVariable("username") String username, Form form) throws IOException {
+        NewUser editUser = new NewUser(username,
+                form.getPassword(), form.getRoles(), form.getFullName(),
+                form.getPhone(), form.getAddress()
+        );
+        UserRepo.save(editUser);
+        return new RedirectView("/user/list", true);
+    }
 
     @GetMapping("/delete/{username}")
     public View delete(@PathVariable("username") String username, Principal principal, HttpServletRequest request) {

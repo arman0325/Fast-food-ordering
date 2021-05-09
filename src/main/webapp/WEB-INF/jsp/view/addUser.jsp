@@ -29,7 +29,7 @@
                             <form:input type="password" path="password" required="required"  class="form-control" />
                         </div>
                         <br/>
-                        <form:checkbox path="roles" value="ROLE_USER" checked="true"/>ROLE_USER
+                        <form:checkbox path="roles" value="ROLE_USER" checked="true" style="display:none"/>ROLE_USER
 
                         <security:authorize access="hasRole('ADMIN')">
                             <form:checkbox path="roles" value="ROLE_ADMIN" />ROLE_ADMIN
